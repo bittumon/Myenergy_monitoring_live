@@ -1,0 +1,2158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+        .banner img {
+            max-width: 200px; /* Double the present size */
+            max-height: 200px; /* Double the present size */
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .details {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 16px;  /* Set default font size */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        select {
+            width: 300px;
+            padding: 5px;
+        }
+        @media (max-width: 768px) {
+            .details {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="banner">
+    <img src="https://www.myenergy.it/assets/my-energy.svg" alt="My Energy Logo">
+</div>
+<div class="search-container">
+    <select id="impianto-select">
+        <option value="">Select Plant</option>
+</html>
+<option value="CIMA SRL">CIMA SRL</option><option value="Capozi - Milano">Capozi - Milano</option><option value="Enjoy 1">Enjoy 1</option><option value="MINERVINO MURGE _ 2kW">MINERVINO MURGE _ 2kW</option><option value="MINERVINO MURGE _ 3kW">MINERVINO MURGE _ 3kW</option><option value="Omnicos">Omnicos</option><option value="Soft">Soft</option><option value="Treviglio Futura KOSTAL">Treviglio Futura KOSTAL</option>
+</select>
+<button onclick="showPlantDetails()">Show Details</button>
+</div>
+<div class="details-container">
+    <div class="details" id="details-section"></div>
+    <div class="details" id="image-section"></div>
+    
+   
+    
+</div>
+
+<script>
+    function showPlantDetails() {
+        var impianto = document.getElementById('impianto-select').value;
+        if (impianto === '') return;
+
+        var row = getRowByImpianto(impianto);  // Get the row data for the selected plant
+
+        var impianto = row[1];
+        var link = row[12];
+        var provincia = row[4];
+        var comune = row[5];
+        var indirizzo = row[6];
+        var tipologia = row[7];
+        var riferimento = row[8];
+        var note = row[9];
+        var imageLink = row[24].replace("https://drive.google.com/file/d/", "https://drive.google.com/uc?id=").replace("/view?usp=drivesdk", "");  // Modify image link
+        var kwp = row[2];
+        var mapLink = row[23];
+        var driveLink = row[24];
+        
+        
+
+        var detailsSection = document.getElementById('details-section');
+        var imageSection = document.getElementById('image-section');
+        var sheetSection = document.getElementById('sheet-section');
+        
+
+        // Populate details section
+        detailsSection.innerHTML = `
+            <p><strong>Impianto:</strong> ${impianto}</p>
+            <p><strong>Potenza:</strong> ${link} Kwp</p>
+            <p><strong>Provincia:</strong> ${provincia}</p>
+            <p><strong>Comune:</strong> ${comune}</p>
+            <p><strong>Indirizzo:</strong> ${indirizzo}</p>
+            <p><strong>Tipologia:</strong> ${tipologia}</p>
+            <p><strong>Riferimento:</strong> ${riferimento}</p>
+            <p><strong>Note:</strong> ${note}</p>
+            <a href="${mapLink}" target="_blank">Open Map</a>
+        `;
+
+
+        // Populate image section
+        imageSection.innerHTML = `
+            <img src="${imageLink}" alt="${impianto}">
+        `;
+        
+      
+    }
+
+    function getRowByImpianto(impianto) {
+        var data = [['23', 'CIMA SRL', 'KOSTAL', 'https://www.kostal-solar-portal.com/#/site/314223/analysis/day/2023-07-27?view=power&view_dt=power', 'VE', 'Santa Maria Di Sala', 'Via Ferraris Galileo, 30', 'O&M', 'Davide 3473054544 - 0415760085\njhhfhgjgjhg\nhgfgjgk', 'Semestrale', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\KOSTAL\\CIMA SRL.png', 'Si', '58', '45.5028,12.023308', '45.5028', '12.023308', 'monitoraggio@myenergy.it', 'Myenergy%2021', 'https://www.kostal-solar-portal.com/', '//*[@id="email"]', '//*[@id="password"]', '//*[@id="app"]/div/div[2]/div/div/div/div[1]/form/div[5]/button', '//*[@id="app"]/div/div[2]/div[3]/div[3]', 'http://www.google.com/maps/place/45.5028,12.023308', 'https://drive.google.com/file/d/1yhWc1UFRiUtKsZ20tN-Rfw_iVoRVSDm_/view?usp=drivesdk'], ['97', 'Treviglio Futura KOSTAL', 'KOSTAL', 'https://www.kostal-solar-portal.com/#/site/167236/analysis/day/2023-05-28?view=power&view_dt=power', 'BG', 'Treviglio', 'Via Redipuglia 35', 'Ordinaria Extra (2 rep)', '0363317817 o 0363317818 Anna Ghezzi 3404621463\nggyhjhgjgkg\nhyfdhjgghgkjhk', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\KOSTAL\\Treviglio Futura KOSTAL.png', 'SI', '70', '45.51333,9.5944444', '45.51333', '9.5944444', 'monitoraggio@myenergy.it', 'Myenergy%2021', 'https://www.kostal-solar-portal.com/', '//*[@id="email"]', '//*[@id="password"]', '//*[@id="app"]/div/div[2]/div/div/div/div[1]/form/div[5]/button', '//*[@id="app"]/div/div[2]/div[3]/div[3]', 'http://www.google.com/maps/place/45.51333,9.5944444', 'https://drive.google.com/file/d/1bg3qSNFAz7DfRB6mkcXFxVd-d74hIukE/view?usp=drivesdk'], ['151', 'Capozi - Milano', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/25d631f1-679c-4223-8ae6-88ef9f849aa5', 'MI', 'Milano', 'Via Toffetti 126', 'O&M', 'Sig. Massimo Cusani 3454726985', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\Capozi - Milano.png', 'SI', '110', '45.44523,9.23034', '45.44523', '9.23034', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/45.44523,9.23034', 'https://drive.google.com/file/d/1x_jyFMgqdl8FTCrxV2StUESuMRH9DfvP/view?usp=drivesdk'], ['157', 'Enjoy 1', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/9b8c38ac-5bf1-43cf-af1c-bc8fa6f5edf7', 'MI', 'Cernusco Sul Naviglio', 'Via Michelangelo Buonarroti, 44/A', 'Ordinaria', 'Ramon Boselli 3884875320', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\Enjoy 1.png', 'SI', '120', '45.52124,9.31639', '45.52124', '9.31639', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/45.52124,9.31639', 'https://drive.google.com/file/d/15cNFpKXLxFjsx0Ez5h31C-utP1P6GCVg/view?usp=drivesdk'], ['56', 'MINERVINO MURGE _ 2kW', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/aaf2d462-b027-44d1-9c91-c6bdfbc587c4', '', '', '', '', '', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\MINERVINO MURGE _ 2kW.png', '', '2', '41.084084,16.074664', '41.084084', '16.074664', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/41.084084,16.074664', 'https://drive.google.com/file/d/1KmntAzLtkvCxlNM3xCnBoNg47-B8ehxP/view?usp=drivesdk'], ['56', 'MINERVINO MURGE _ 3kW', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/6fd374cc-9d4b-46b0-8644-0497e6476619', 'BA', 'Minervino Murge', '', 'Myenergy', '', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\MINERVINO MURGE _ 3kW.png', 'SI', '3', '41.084084,16.074664', '41.084084', '16.074664', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/41.084084,16.074664', 'https://drive.google.com/file/d/1hx6ffAGsRD_ad5ElvqUwJW6QbmSNnFRQ/view?usp=drivesdk'], ['68', 'Omnicos', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/407a943c-7bc8-4d85-ba44-75d5a51edde3', 'CR', 'Romanengo', 'Strada Provinciale ex Strada Statale 415 Paullese, 2, 26010 Bagnolo Cremasco CR', 'Ordinaria Extra', 'Giuseppe +39 338 428 1009 o 0373729969', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\Omnicos.png', 'SI', '259', '45.371787,9.616303', '45.371787', '9.616303', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/45.371787,9.616303', 'https://drive.google.com/file/d/185TG1HtUnHewnfgGDgBN7lClMBmySeni/view?usp=drivesdk'], ['132', 'Soft', 'SMA', 'https://www.sunnyportal.com/RedirectToPlant/534d10a8-73c7-4227-bb5c-a94165bf807d', 'BI', 'Quaregna Cerreto', 'Via Piave 5', 'Ordinaria', '', '', 'C:\\Users\\lcd-user\\source\\repos\\datalogger sunguard\\Image Extracted\\SMA\\Soft.png', 'SI', '1185', '45.562336,8.1566834', '45.562336', '8.1566834', 'tecnico@myenergy.it', 'myenergy%2017', 'https://www.sunnyportal.com/', '//*[@id="txtUserName"]', '//*[@id="txtPassword"]', '//*[@id="ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn"]', '/html/body/form/table/tbody/tr/td/table/tbody/tr/td[2]/div/div[1]/div[2]', 'http://www.google.com/maps/place/45.562336,8.1566834', 'https://drive.google.com/file/d/11s0XH4n8D8UBPB9whmxGPTeEWwa3c9jq/view?usp=drivesdk']];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][1] === impianto) {
+                return data[i];
+            }
+        }
+        return null;
+    }
+</script>
+
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Plant Details</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .banner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #f5f5f5;
+            }
+            .banner img {
+                max-width: 200px;
+                max-height: 200px;
+            }
+            .search-container {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .details-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .details {
+                border: 1px solid #ccc;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+                text-align: left;
+                font-size: 16px;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            select {
+                width: 300px;
+                padding: 5px;
+            }
+            @media (max-width: 768px) {
+                .details {
+                    font-size: 14px;
+                }
+            }
+        </style>
+        <script>
+            var currentlyDisplayedDiv = null;
+
+            function showDiv() {
+                var selectedValue = document.getElementById("dropdown").value;
+                var divToDisplay = document.getElementById(selectedValue);
+                
+                if (currentlyDisplayedDiv) {
+                    currentlyDisplayedDiv.style.display = "none";
+                }
+
+                if (divToDisplay) {
+                    divToDisplay.style.display = "block";
+                    currentlyDisplayedDiv = divToDisplay;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="search-container">
+            <select id="dropdown">
+                <option value="" disabled selected>Select a value</option>
+                <option value="CIMA SRL">CIMA SRL</option><option value="Capozi - Milano">Capozi - Milano</option><option value="Enjoy 1">Enjoy 1</option><option value="MINERVINO MURGE _ 2kW">MINERVINO MURGE _ 2kW</option><option value="MINERVINO MURGE _ 3kW">MINERVINO MURGE _ 3kW</option><option value="Omnicos">Omnicos</option><option value="Soft">Soft</option><option value="Treviglio Futura KOSTAL">Treviglio Futura KOSTAL</option>
+            </select>
+            <button onclick="showDiv()">Ex.Ord Maintenance History</button>
+        </div>
+        <div class="details-container">
+            <div id="CIMA SRL" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di CIMA SRL</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td>19/04/2023 10.14.46</td>
+      <td>IMPIANTO NON MONITORABILE</td>
+      <td>10/05/2023 10.34.10</td>
+      <td>Impinato Visibile</td>
+      <td>Ok</td>
+      <td>10/05/2023</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td>30/05/2023 14.53.46</td>
+      <td>Inverter 1  GUASTO</td>
+      <td>09/06/2023 15.44.04</td>
+      <td>Inverter 1, installato alle 14:50</td>
+      <td>OK</td>
+      <td>09/06/2023</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td>08/07/2023 17.03.37</td>
+      <td>Inverter AURORA 2 ZERO (dal 13/06/2023) - Inverter 1 a 0 da questa mattina (ore 8,45). Monitoraggio non visibile dal 5/7</td>
+      <td>12/07/2023 11.20.51</td>
+      <td>Offerta accetta da parte del cliente, in attesa della sostituzione (Inv. 2)\nPer inverter 1 chiesta uscita tenica a Energia Prima 04/07/2023 \nN.B. : ENTRAMBI GLI INVERTER SONO IN RIPARAZIONE</td>
+      <td>OK</td>
+      <td>31/07/2023</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td>05/08/2023 9.22.20</td>
+      <td>Inverter 1 ZERO (da 31/7).     Monitoraggio fermo da questa notte</td>
+      <td>07/08/2023 10.56.47</td>
+      <td>Monitoraggio Visibile (Mariano)</td>
+      <td>ok</td>
+      <td>07/08/2023</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>27</td>
+      <td>Cristofano - CORE</td>
+      <td>99,36</td>
+      <td>FALSE</td>
+      <td>29/08/2023 15.56.15</td>
+      <td>Inverter 1 a 0 (da 31/7).    Inverter 1 tornato in funzione alle ore 10,40 di oggi</td>
+      <td>28/08/2023 15.00.51</td>
+      <td>Inverter è stato spedito il 25/08, siamo in attesa dell'istallazione (Mariano)</td>
+      <td>OK</td>
+      <td>29/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="Capozi - Milano" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di Capozi - Milano</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>15/06/2023 11.06.41</td>
+      <td>Potenza istantanea OK, ma monitoraggio fermo alle 5,30 di questa mattina</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>16/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>21/06/2023 7.02.12</td>
+      <td>Portale SMA in manutenzione</td>
+      <td>21/06/2023 14.38.36</td>
+      <td>VERIFICATO</td>
+      <td>ok</td>
+      <td>21/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>04/07/2023 9.01.46</td>
+      <td>Da monitoraggio impianto sembre FERMO ( VERIFICARE )</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>04/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>20/07/2023 6.29.04</td>
+      <td>Entrambi gli inverter STP25000TL a ZERO.   Problema software perchè gli inverter sono OK</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>20/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>27/08/2023 11.31.40</td>
+      <td>Inverter STP50 a 0 da questa mattina (produzione bassa anche degli atri 2 inverter)</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>28/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>29/08/2023 9.51.04</td>
+      <td>Monitoraggio NON visibile da questa mattina (28/8).    Monitoraggio tornato visibile oggi</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>29/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151</td>
+      <td>Capozi</td>
+      <td>110</td>
+      <td>FALSE</td>
+      <td>29/08/2023 16.47.58</td>
+      <td>Ritardo nella comunicazione di 6 ore</td>
+      <td></td>
+      <td></td>
+      <td>Ok</td>
+      <td>30/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="Enjoy 1" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td>159</td>
+      <td>Effeci International Cables srl</td>
+      <td>50</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di Enjoy 1</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td>159</td>
+      <td>Effeci International Cables srl</td>
+      <td>50</td>
+      <td>FALSE</td>
+      <td>30/05/2023 12.11.30</td>
+      <td>Impianto Fermo</td>
+      <td>30/05/2023 12.11.57</td>
+      <td>Impianto funzionante</td>
+      <td>Ok</td>
+      <td>30/05/2023</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>159</td>
+      <td>Effeci International Cables srl</td>
+      <td>50</td>
+      <td>FALSE</td>
+      <td>12/06/2023 15.05.41</td>
+      <td>Impianto FERMO dalle ore 12,50 bollino ROSSO - Impianto acceso il 12/06/2023 ore 9,30</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>12/06/2023</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>159</td>
+      <td>Effeci International Cables srl</td>
+      <td>50</td>
+      <td>FALSE</td>
+      <td>14/06/2023 12.02.23</td>
+      <td>Impianto FERMO dalle ore 11,10 bollino ROSSO</td>
+      <td>16/06/2023</td>
+      <td>Ho avvisato Terra (AMine)</td>
+      <td>ok</td>
+      <td>19/06/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="MINERVINO MURGE _ 2kW" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>180</td>
+      <td>Minervino Murge 2kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di MINERVINO MURGE _ 2kW</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>180</td>
+      <td>Minervino Murge 2kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>28/06/2023 5.52.26</td>
+      <td>Monitoraggio NON visibibile dal 25/06/2023 ore 12  (avviso del 26/06/2023)</td>
+      <td>07/07/2023 8.36.27</td>
+      <td>Impianto Visibile dal monitoraggio (Mariano)</td>
+      <td>OK</td>
+      <td>07/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>180</td>
+      <td>Minervino Murge 2kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>07/07/2023 16.03.13</td>
+      <td>Monitoraggio FERMO alle ore 11,00</td>
+      <td>12/07/2023 11.05.43</td>
+      <td>Sento Rmina oggi pomeriggio per capire se dobbiamo chiamare Porro</td>
+      <td>OK</td>
+      <td>24/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>180</td>
+      <td>Minervino Murge 2kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>24/07/2023 17.04.03</td>
+      <td>Monitoraggio FERMO alle ore 13,00</td>
+      <td>03/08/2023 9.00.18</td>
+      <td>Monitoraggio invisibile (aspettare intervento Porro interverrà in data 03/08/2023 - 04/08/2023) Alessia</td>
+      <td>ok</td>
+      <td>08/08/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>180</td>
+      <td>Minervino Murge 2kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>09/08/2023 11.45.52</td>
+      <td>Monitoraggio NON visibile</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>09/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="MINERVINO MURGE _ 3kW" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>181</td>
+      <td>Minervino Murge_3kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di MINERVINO MURGE _ 3kW</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>181</td>
+      <td>Minervino Murge_3kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>28/06/2023 5.52.29</td>
+      <td>Monitoraggio NON visibibile dal 25/06/2023 ore 12  (avviso del 26/06/2023)</td>
+      <td>07/07/2023 8.36.31</td>
+      <td>Impianto Visibile dal monitoraggio (Mariano)</td>
+      <td>Ok</td>
+      <td>07/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>181</td>
+      <td>Minervino Murge_3kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>07/07/2023 16.03.56</td>
+      <td>Monitoraggio FERMO alle ore 11,00</td>
+      <td>12/07/2023 11.04.25</td>
+      <td>Sento Rmina oggi pomeriggio per capire se dobbiamo chiamare Porro</td>
+      <td>OK</td>
+      <td>24/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>181</td>
+      <td>Minervino Murge_3kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>24/07/2023 17.04.25</td>
+      <td>Monitoraggio FERMO alle ore 13,00</td>
+      <td>03/08/2023 9.00.18</td>
+      <td>Monitoraggio invisibile (aspettare intervento Porro interverrà in data 03/08/2023 - 04/08/2023) Alessia</td>
+      <td>ok</td>
+      <td>08/08/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>181</td>
+      <td>Minervino Murge_3kW (Portale SMA)</td>
+      <td></td>
+      <td>FALSE</td>
+      <td>09/08/2023 11.44.20</td>
+      <td>Monitoraggio NON visibile</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>09/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="Omnicos" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di Omnicos</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td>19/04/2023 8.30.59</td>
+      <td>Impianto Visibile (Mattia)</td>
+      <td>Ok</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>19/04/2023 10.07.37</td>
+      <td>grafico fermo dal 20/03/2023</td>
+      <td>19/04/2023 10.07.59</td>
+      <td>è arrivato oggi Inverter Manager, il 18 Aprile sarà installato</td>
+      <td>Ok</td>
+      <td>19/04/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>19/04/2023 13.02.12</td>
+      <td>Impinato Visibile</td>
+      <td>19/04/2023 13.02.17</td>
+      <td>Impianto Visibile (Mariano)</td>
+      <td>Ok</td>
+      <td>19/04/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td>19/04/2023 16.49.13</td>
+      <td>Tutti e 4 inverter OK  (Alessia)</td>
+      <td>ok</td>
+      <td>19/04/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td>20/04/2023 8.35.00</td>
+      <td>Impianto Acceso (Mattia)</td>
+      <td>Ok</td>
+      <td>20/04/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>05/06/2023 16.38.00</td>
+      <td>Inverter A ZERO</td>
+      <td>06/06/2023 8.47.07</td>
+      <td>Inv. A ripartito</td>
+      <td>Ok</td>
+      <td>06/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td>06/06/2023 8.48.18</td>
+      <td>Inv. A sta comunicando (Mariano)</td>
+      <td>Ok</td>
+      <td>06/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>06/06/2023 16.31.03</td>
+      <td>Monitoraggio FERMO alle ore 14,30</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>06/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>10/06/2023 11.25.22</td>
+      <td>Impiianto fermo da questa mattina (10/06/2023) - Riavviato alle ore 9,30</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>10/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>13/06/2023 8.32.21</td>
+      <td>Inverter A ZERO</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>13/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>15/06/2023 9.41.19</td>
+      <td>Inverter A ZERO.    Inverter riavviato ore 9,00</td>
+      <td>16/06/2023 8.52.26</td>
+      <td>Inverter A ok</td>
+      <td>ok</td>
+      <td>16/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>19/06/2023 9.14.58</td>
+      <td>Inverter A ZERO</td>
+      <td>19/06/2023 9.36.06</td>
+      <td>Swap Inverter (Mattia + Michele)</td>
+      <td>Ok</td>
+      <td>20/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>21/06/2023 9.46.38</td>
+      <td>Portale SMA in manutenzione</td>
+      <td>21/06/2023 14.40.21</td>
+      <td>verificato</td>
+      <td>ok</td>
+      <td>21/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>26/06/2023 6.55.09</td>
+      <td>Inverter A a 0 da questa mattina.   Inverter acceso ore 10,45 (25/06/2023)</td>
+      <td>26/06/2023 8.14.39</td>
+      <td>Inverter A accesso in data 25/06/2023</td>
+      <td>Ok</td>
+      <td>26/06/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>07/07/2023 8.49.40</td>
+      <td>Inverter A ZERO</td>
+      <td>07/07/2023 8.52.28</td>
+      <td>Avvisato il cliente (Romina)</td>
+      <td>ok</td>
+      <td>07/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>13/07/2023 18.21.26</td>
+      <td>Inverter A non visibile da ieri (dopo sostituzione inverter). Inverter tornato visibile oggi 13/7</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>13/07/2023</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>68</td>
+      <td>OMNICOS</td>
+      <td>259,2</td>
+      <td>FALSE</td>
+      <td>29/08/2023 16.49.12</td>
+      <td>Ritardo nella comunicazione di 4 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>30/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="Soft" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>30/08/2023 9.13.43</td>
+      <td>Ritardo nella comunazione di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di Soft</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>FALSE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>06/06/2023 16.33.02</td>
+      <td>Monitoraggio FERO alle ore 14,00</td>
+      <td>06/06/2023 13.14.11</td>
+      <td>Impianto funzionante (Mariano)</td>
+      <td>ok</td>
+      <td>06/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>09/06/2023 9.53.52</td>
+      <td>Monitoraggio FERMO a 12 ore fa</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>09/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>13/06/2023 11.46.12</td>
+      <td>Ultimi dati monitoraggio 14 ORE FA</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>13/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>19/06/2023 9.17.52</td>
+      <td>Ritardo nella comunicazione dati di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>19/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>21/06/2023 7.02.00</td>
+      <td>Portale SMA in manutenzione</td>
+      <td>21/06/2023 14.39.34</td>
+      <td>verificato</td>
+      <td>ok</td>
+      <td>21/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>22/06/2023 9.12.29</td>
+      <td>Monitoraggio FERMO a 12 ore fa</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>22/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>23/06/2023 10.14.18</td>
+      <td>Monitoraggio in RITARDO di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>23/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>26/06/2023 9.34.18</td>
+      <td>12 ore di ritardo dati monitoraggio</td>
+      <td>26/06/2023 14.56.16</td>
+      <td>Impianto visibile dopo 12h</td>
+      <td>ok</td>
+      <td>26/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>27/06/2023 9.17.24</td>
+      <td>Dati monitoraggio in RITARDO di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>27/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>28/06/2023 9.40.53</td>
+      <td>Monitoraggio in RITARDO di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>28/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>29/06/2023 9.06.12</td>
+      <td>Comunicazione dati monitoraggio RITARDO di 11 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>29/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>30/06/2023 10.06.06</td>
+      <td>Ritardo comunicazione dati di 13 ore</td>
+      <td>30/06/2023 15.39.21</td>
+      <td>Impianto visibile  adesso(problemi di communicazione)</td>
+      <td>OK</td>
+      <td>30/06/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>04/07/2023 9.02.54</td>
+      <td>Monitoraggio FERMO a 11 ore fa</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>04/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>05/07/2023 9.08.14</td>
+      <td>Monitoraggio in ritardo di 11 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>05/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>06/07/2023 9.07.10</td>
+      <td>Monitoraggio in RITARDO di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>06/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>07/07/2023 8.51.16</td>
+      <td>Comunicazione  dati in RITARDO di 11 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>07/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>10/07/2023 9.07.41</td>
+      <td>Comunicazione dati in RITARDO di 11 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>10/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>11/07/2023 9.01.56</td>
+      <td>11 ore RITARDO trasmissione dati</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>12/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>12/07/2023 9.08.44</td>
+      <td>12 ore RITARDO trasmissione dati</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>12/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>13/07/2023 9.24.19</td>
+      <td>Comunicazione dati in RITARDIO di 13 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>14/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>17/07/2023 9.06.15</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>17/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>18/07/2023 9.22.03</td>
+      <td>Ritardo nella comunicazione dati di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>19/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>19/07/2023 9.26.17</td>
+      <td>Ritardo comunicazioine dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>19/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>20/07/2023 9.49.19</td>
+      <td>Comunicazione dati in ritardo di 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>20/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>21/07/2023 9.36.56</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>21/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>24/07/2023 9.09.56</td>
+      <td>Ritrdo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>24/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>25/07/2023 10.01.39</td>
+      <td>Comunicazione dati ritardo di 13 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>25/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>26/07/2023 9.34.18</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>26/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>27/07/2023 9.24.01</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>28/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>28/07/2023 10.12.40</td>
+      <td>Ritardo comunicazione dati 13 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>28/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>31/07/2023 9.39.24</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>31/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>01/08/2023 9.19.41</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>01/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>02/08/2023 9.28.16</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>02/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>03/08/2023 9.48.39</td>
+      <td>Ritardo comunicazione dati 13 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>03/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>04/08/2023 9.33.25</td>
+      <td>Ritardo trasmissione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>04/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>06/08/2023 11.19.28</td>
+      <td>Ritardo comunicazione dati 14 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>07/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>11/08/2023 9.30.23</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>11/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>21/08/2023 9.34.31</td>
+      <td>Ritardo nella comunicazione dati di 13 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>21/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>22/08/2023 9.18.24</td>
+      <td>Comunicazione dati ferma a 13 ore fa.     Monitoraggio ttornato regolare</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>23/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>24/08/2023 9.11.21</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>24/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>25/08/2023 9.09.04</td>
+      <td>Ritardo comunicazione dati 12 ore</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>26/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>132</td>
+      <td>Soft</td>
+      <td>1185</td>
+      <td>FALSE</td>
+      <td>29/08/2023 16.48.26</td>
+      <td>Ritardo nella comunazione di 4 ore</td>
+      <td>28/08/2023 14.57.48</td>
+      <td>Ultima comunicazione alle 12 (Mariano) (Ritardo)</td>
+      <td>Ok</td>
+      <td>29/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div><div id="Treviglio Futura KOSTAL" style="display: none;">
+<div>
+<style>
+    th {
+        background-color: rgb(147, 196, 125);
+    }
+    .table-container {
+        height: 400px;  /* Adjust the height as needed */
+        overflow-y: auto;  /* Vertical scroll only */
+    }
+    .scrollable-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .scrollable-table th, .scrollable-table td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .scrollable-table thead {
+        position: sticky;
+        top: 0;
+        background-color: rgb(147, 196, 125);
+    }
+</style>
+
+<body>
+<h2>Evento attivo</h2>
+<div class="table-container1">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+
+<h3> Eventi chiusi di Treviglio Futura KOSTAL</h3>
+<div class="table-container">
+    <table class="scrollable-table">
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Priorità</th>
+      <th>TRUE</th>
+      <th>Impianto</th>
+      <th>kWp</th>
+      <th>BUTTON</th>
+      <th>Data e Ora
+(Vittorio)</th>
+      <th>Problematiche segnalate da
+(Vittorio)</th>
+      <th>Data e Ora
+(Myenergy)</th>
+      <th>Linea Storica degli Eventi
+(MyEnergy)</th>
+      <th>Check
+(Conf. da Vittorio)</th>
+      <th>Ultimo Check da Vittorio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>12/07/2023 13.00.41</td>
+      <td>Inverter 5 e 6 NON visibili ( Sunguard ) - Monitoraggio Kostal</td>
+      <td>14/07/2023 15.39.10</td>
+      <td>Monitoraggio si vede (AMine)</td>
+      <td>OK</td>
+      <td>15/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>17/07/2023 16.20.46</td>
+      <td>Monitoraggio FERMO alle ore 8,10</td>
+      <td>17/07/2023 16.41.03</td>
+      <td>Ho avvisato la proprietaria per verificare l'impianto Fv  (aMINE)</td>
+      <td>OK</td>
+      <td>18/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>20/07/2023 9.05.41</td>
+      <td>Monitoraggio NON visibile</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>21/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>22/07/2023 16.24.53</td>
+      <td>Inverter PSP15401165 a 0 da questa mattina.    Inverter ripartito in mattinata</td>
+      <td></td>
+      <td></td>
+      <td>OK</td>
+      <td>22/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>25/07/2023 10.07.16</td>
+      <td>Monitoraggio NON visibile</td>
+      <td>25/07/2023 14.36.49</td>
+      <td>La cliente ha riaviato il router (AMine)</td>
+      <td>ok</td>
+      <td>25/07/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>03/08/2023 9.26.14</td>
+      <td>Monitoraggio NON visibile</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>04/08/2023</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>97</td>
+      <td>Tintoria Trevigliese (Kostal)</td>
+      <td>70,15</td>
+      <td>FALSE</td>
+      <td>09/08/2023 11.31.31</td>
+      <td>Inverter PSP15401165 FERMO</td>
+      <td></td>
+      <td></td>
+      <td>ok</td>
+      <td>10/08/2023</td>
+    </tr>
+  </tbody>
+</table>
+    </table>
+</div>
+</body>
+</div>
+</div>
+        </div>
+    </body>
+    </html>
+    
