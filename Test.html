@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Web Page</title>
+    <style>
+        /* Styles for the banner */
+        .banner {
+            background-color: #FFFFFF; /* Saffron color */
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Styles for the logo */
+        .logo {
+            max-width: 200px; /* Adjust the max-width as needed */
+            height: auto;
+        }
+
+        /* Styles for the tabs container */
+        .tabs-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #FFFFFF; /* Blue color */
+            padding: 10px 0;
+        }
+
+        /* Style the tab buttons */
+        .tab-button {
+            background-color: #007BFF; /* Blue color */
+            border: 1px solid #0056b3; /* Border for each tab */
+            border-radius: 5px; /* Rounded corners for tabs */
+            color: white;
+            cursor: pointer;
+            flex-grow: 1;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        /* Style the active tab button */
+        .active-tab-button {
+            background-color: #0056b3; /* Darker blue for active tab */
+            font-weight: bold;
+        }
+
+        /* Styles for the tab content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        /* Style the active tab content */
+        .active-tab {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="https://www.myenergy.it/assets/my-energy.svg" alt="Logo" class="logo">
+    </div>
+
+    <!-- Tabs container -->
+    <div class="tabs-container">
+        <!-- Tab buttons -->
+        <button class="tab-button active-tab-button" onclick="openTab('tab1')">Tab 1</button>
+        <button class="tab-button" onclick="openTab('tab2')">Tab 2</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="tab1" class="tab-content active-tab">
+        <!-- Content for Tab 1 goes here -->
+        <h2>Tab 1 Content</h2>
+        <p>This is the content for Tab 1. You can add your HTML elements here.</p>
+        <!-- Add an iframe to load the generated HTML -->
+        <iframe src="solar_plant_data.html" style="width: 100%; height: 500px; border: none;"></iframe>
+    </div>
+    <div id="tab2" class="tab-content">
+        <!-- Content for Tab 2 goes here -->
+        <h2>Tab 2 Content</h2>
+        <p>This is the content for Tab 2. You can add your HTML elements here.</p>
+        <!-- Add an iframe to load the generated HTML -->
+        <iframe src="solar_plant_data.html" style="width: 100%; height: 500px; border: none;"></iframe>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tabContent => {
+                tabContent.classList.remove('active-tab');
+            });
+
+            // Deactivate all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(tabButton => {
+                tabButton.classList.remove('active-tab-button');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active-tab');
+
+            // Activate the selected tab button
+            const activeTabButton = document.querySelector(`[onclick="openTab('${tabName}')"]`);
+            activeTabButton.classList.add('active-tab-button');
+        }
+    </script>
+</body>
+</html>

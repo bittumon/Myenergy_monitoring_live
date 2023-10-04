@@ -1,0 +1,922 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solar Plant Data</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 999;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        .image-container {
+            margin-top: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .image-card {
+            flex: 0 0 calc(33.33% - 20px);
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .image-title {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .gallery-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            text-align: center;
+            z-index: 9999;
+        }
+        .gallery-content {
+            position: relative;
+            margin: 10px auto;
+            max-width: 80%;
+            max-height: 80%;
+        }
+        .gallery-image {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .gallery-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+        .gallery-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+        }
+        .gallery-prev {
+            left: 20px;
+        }
+        .gallery-next {
+            right: 20px;
+        }
+        /* Additional styles for search bars */
+        .search-container {
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background-color: #fff;
+            padding: 10px;
+            position: sticky;
+            top: 60px;
+            z-index: 1000;
+        }
+        label {
+            margin-right: 10px;
+        }
+        .search-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        select, input[type="text"] {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Solar Plant Data</h1>
+    </header>
+
+    <!-- Search bars for Monitoring, Plant Name, and Portale -->
+    <div class="search-container">
+        <label for="monitoring-select">Select Monitoring:</label>
+        <select id="monitoring-select">
+            <option value="">All</option>
+            <option value='ALLESSIA'>ALLESSIA</option><option value='Amine'>Amine</option><option value='Bittu'>Bittu</option><option value='FIMER'>FIMER</option><option value='FUSION'>FUSION</option><option value='METE'>METE</option><option value='Mariano'>Mariano</option><option value='Romina'>Romina</option><option value='SMA'>SMA</option><option value='SUNGUARD'>SUNGUARD</option>
+        </select>
+        <label for="plant-name-select">Select Plant Name:</label>
+        <select id="plant-name-select">
+            <option value="">All</option>
+            <option value='4 Madonne'>4 Madonne</option><option value='ASTRA'>ASTRA</option><option value='ASTRA Grande'>ASTRA Grande</option><option value='ATTIS'>ATTIS</option><option value='Albatross 2019'>Albatross 2019</option><option value='Autoweb'>Autoweb</option><option value='Az. Agricola San Giuliano'>Az. Agricola San Giuliano</option><option value='Barter S.r.l'>Barter S.r.l</option><option value='Bassu'>Bassu</option><option value='Bobbio'>Bobbio</option><option value='Bricoman - Orbassano'>Bricoman - Orbassano</option><option value='Bricoman - Venegono'>Bricoman - Venegono</option><option value='Butti Dino'>Butti Dino</option><option value='CAMINADA'>CAMINADA</option><option value='CASSETTA'>CASSETTA</option><option value='CIMA SRL'>CIMA SRL</option><option value='CITAC'>CITAC</option><option value='CREMONESI'>CREMONESI</option><option value='CRISTOFANO'>CRISTOFANO</option><option value='CS ROSERIO'>CS ROSERIO</option><option value='Cabo'>Cabo</option><option value='Caffe Port Moka'>Caffe Port Moka</option><option value='Campogalliano'>Campogalliano</option><option value='Canfari'>Canfari</option><option value='Capozi - Milano'>Capozi - Milano</option><option value='Casabona'>Casabona</option><option value='Cascina Guastalla'>Cascina Guastalla</option><option value='Castagna Arconate'>Castagna Arconate</option><option value='Castelnovetto'>Castelnovetto</option><option value='Casu Antonio'>Casu Antonio</option><option value='Casu Daniele'>Casu Daniele</option><option value='Centro Commerciale 20kwp MYENERGY'>Centro Commerciale 20kwp MYENERGY</option><option value='Centro Commerciale 49kwp CONDIZIONATORI'>Centro Commerciale 49kwp CONDIZIONATORI</option><option value='Centro Commerciale 56kwp POMPE'>Centro Commerciale 56kwp POMPE</option><option value='Centro Nautico Amici'>Centro Nautico Amici</option><option value='Cima'>Cima</option><option value='Cubotondo'>Cubotondo</option><option value='Cucchi'>Cucchi</option><option value='DEPURATORE S ROCCO - MM SPA'>DEPURATORE S ROCCO - MM SPA</option><option value='Danesi'>Danesi</option><option value='Donatello'>Donatello</option><option value='EFFECI INTERNATIONAL CABLE'>EFFECI INTERNATIONAL CABLE</option><option value='Enjoy 1'>Enjoy 1</option><option value='Essetre forniture'>Essetre forniture</option><option value='Eurofrigo'>Eurofrigo</option><option value='FIMAR'>FIMAR</option><option value='Fiat Ala Cantu'>Fiat Ala Cantu</option><option value='Fiat_Ala'>Fiat_Ala</option><option value='Fora'>Fora</option><option value='Fresh Tropical'>Fresh Tropical</option><option value='GDU'>GDU</option><option value='Galli S.R.L.'>Galli S.R.L.</option><option value='Garavello'>Garavello</option><option value='Gelmini'>Gelmini</option><option value='Ghisu'>Ghisu</option><option value='Gozo'>Gozo</option><option value='Herman Koll srl'>Herman Koll srl</option><option value='I.C.P. Industria Conciaria Piemonte Srl ex Siva Pelli'>I.C.P. Industria Conciaria Piemonte Srl ex Siva Pelli</option><option value='Il Grillo Civitanova'>Il Grillo Civitanova</option><option value='Il Risparmio - 1'>Il Risparmio - 1</option><option value='Il Risparmio - 2'>Il Risparmio - 2</option><option value='Immobiliare Effecieffe'>Immobiliare Effecieffe</option><option value='Innovapack'>Innovapack</option><option value='Janus'>Janus</option><option value='KORNELIO'>KORNELIO</option><option value='King S.p.A'>King S.p.A</option><option value='La Cittadella Sociale'>La Cittadella Sociale</option><option value='La Nuova Limfer'>La Nuova Limfer</option><option value='La Scossa di Via Finlandia'>La Scossa di Via Finlandia</option><option value='La scossa - Soliera Via 1 Maggio'>La scossa - Soliera Via 1 Maggio</option><option value='La scossa via Gazzotti'>La scossa via Gazzotti</option><option value='Lagostina SPA'>Lagostina SPA</option><option value='Ledda'>Ledda</option><option value='Lsi'>Lsi</option><option value='MGB-Magazzini'>MGB-Magazzini</option><option value='MIA'>MIA</option><option value='MIA carpark'>MIA carpark</option><option value='MINERVINO MURGE _ 2kW'>MINERVINO MURGE _ 2kW</option><option value='MINERVINO MURGE _ 3kW'>MINERVINO MURGE _ 3kW</option><option value='Mel'>Mel</option><option value='Minervino_Murge'>Minervino_Murge</option><option value='Mirabello'>Mirabello</option><option value='Modena_via Morello'>Modena_via Morello</option><option value='Modena_via Nazioni'>Modena_via Nazioni</option><option value='Mokito SPA'>Mokito SPA</option><option value='Mollificio Marchesi'>Mollificio Marchesi</option><option value='Myenergy - Alseno'>Myenergy - Alseno</option><option value='Nepi - 51.52 [kWp]'>Nepi - 51.52 [kWp]</option><option value='Nepi_Grande'>Nepi_Grande</option><option value='Njlaya srl'>Njlaya srl</option><option value='Nuovarredo'>Nuovarredo</option><option value='Officine Viola'>Officine Viola</option><option value='Omnicos'>Omnicos</option><option value='PELLICANO'>PELLICANO</option><option value='POSTE ITALIANE - CMP BRESCIA'>POSTE ITALIANE - CMP BRESCIA</option><option value='POSTE ITALIANE - MARCON'>POSTE ITALIANE - MARCON</option><option value='POSTE ITALIANE - MARTELLAGO'>POSTE ITALIANE - MARTELLAGO</option><option value='POSTE ITALIANE - ORIAGO'>POSTE ITALIANE - ORIAGO</option><option value='POSTE ITALIANE - POLIFUNZIONALE MESTRE'>POSTE ITALIANE - POLIFUNZIONALE MESTRE</option><option value='POSTE ITALIANE - PREGANZIOL'>POSTE ITALIANE - PREGANZIOL</option><option value='POSTE ITALIANE - SANTA MARIA SALA'>POSTE ITALIANE - SANTA MARIA SALA</option><option value='Parrocchia san Lorenzo'>Parrocchia san Lorenzo</option><option value='Pedauto'>Pedauto</option><option value='Poste Italiane - Baggio'>Poste Italiane - Baggio</option><option value='Postel MELZO'>Postel MELZO</option><option value='Prima Pietra'>Prima Pietra</option><option value='Ronconi'>Ronconi</option><option value='SIMAI'>SIMAI</option><option value='SIVA PELLI - GALLIATE'>SIVA PELLI - GALLIATE</option><option value='Sant'Alberto'>Sant'Alberto</option><option value='Sezione 1 - Capannone Centrale - 57.42 kWp'>Sezione 1 - Capannone Centrale - 57.42 kWp</option><option value='Sezione 2 - Capannone Est - 139.86 kWp'>Sezione 2 - Capannone Est - 139.86 kWp</option><option value='Sezione 3 - Capannone Ovest - 103.06 kWp'>Sezione 3 - Capannone Ovest - 103.06 kWp</option><option value='Sezione 4 - Capannone Nord - 118.98 kWp'>Sezione 4 - Capannone Nord - 118.98 kWp</option><option value='Sezione 5 - 204.925 kWp'>Sezione 5 - 204.925 kWp</option><option value='Siva Pelli - 163'>Siva Pelli - 163</option><option value='Soft'>Soft</option><option value='Sogno'>Sogno</option><option value='Sogno-107KWP'>Sogno-107KWP</option><option value='Spring85'>Spring85</option><option value='Stabilimento di Frasassi'>Stabilimento di Frasassi</option><option value='Tintoria Trevigliese'>Tintoria Trevigliese</option><option value='Togni_SMA'>Togni_SMA</option><option value='Tosca'>Tosca</option><option value='Tosca 20kw'>Tosca 20kw</option><option value='Transmatic'>Transmatic</option><option value='Treviglio Futura KOSTAL'>Treviglio Futura KOSTAL</option><option value='Tubinox S.r.l.'>Tubinox S.r.l.</option><option value='Verna'>Verna</option><option value='Verwerkaf'>Verwerkaf</option><option value='Vibieffe'>Vibieffe</option><option value='Villa & Bega'>Villa & Bega</option><option value='Vismaravetro'>Vismaravetro</option><option value='Viteria Dell'Era'>Viteria Dell'Era</option><option value='ZAMAPRES SRL'>ZAMAPRES SRL</option><option value='ZED Milano'>ZED Milano</option><option value='ZMC Italia S.r.l.'>ZMC Italia S.r.l.</option>
+        </select>
+        <label for="portale-select">Select Portale:</label>
+        <select id="portale-select">
+            <option value="">All</option>
+            <option value='FIMER'>FIMER</option><option value='FRONIUS'>FRONIUS</option><option value='FUSION SOLAR'>FUSION SOLAR</option><option value='ISOLAR CLOUD'>ISOLAR CLOUD</option><option value='KOSTAL'>KOSTAL</option><option value='METEOCONTROL'>METEOCONTROL</option><option value='SMA'>SMA</option><option value='SOLAR LOG'>SOLAR LOG</option><option value='SUNGUARD'>SUNGUARD</option><option value='SUNNY PORTAL'>SUNNY PORTAL</option>
+        </select>
+    </div>
+
+    <div class="image-container">
+
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Butti Dino" data-portale="FUSION SOLAR" data-index="0">
+            <img src="https://drive.google.com/uc?id=1t74Hm3QOCvaLqoiZN2Aey_rwvpoRFi4g" alt="Butti Dino">
+            <p class="image-title">Butti Dino</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Danesi" data-portale="FUSION SOLAR" data-index="1">
+            <img src="https://drive.google.com/uc?id=1mSV_RJhZq86EUmBPet2DelouZ11wE3Ex" alt="Danesi">
+            <p class="image-title">Danesi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="EFFECI INTERNATIONAL CABLE" data-portale="FUSION SOLAR" data-index="2">
+            <img src="https://drive.google.com/uc?id=13Cv1xLGirqpK99EMzw0B0cNEgtCNPvQt" alt="EFFECI INTERNATIONAL CABLE">
+            <p class="image-title">EFFECI INTERNATIONAL CABLE</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Essetre forniture" data-portale="FUSION SOLAR" data-index="3">
+            <img src="https://drive.google.com/uc?id=1W2wpSTidMbJG5AA6DR2wekV277GIXPkn" alt="Essetre forniture">
+            <p class="image-title">Essetre forniture</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="FIMAR" data-portale="FUSION SOLAR" data-index="4">
+            <img src="https://drive.google.com/uc?id=1LcFmRLQ5RWTOBgVArbVpZH2teWYTsWbv" alt="FIMAR">
+            <p class="image-title">FIMAR</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Fresh Tropical" data-portale="FUSION SOLAR" data-index="5">
+            <img src="https://drive.google.com/uc?id=1gNzSSY3xCcd8zXkKsCi5sMas9spfPcem" alt="Fresh Tropical">
+            <p class="image-title">Fresh Tropical</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Garavello" data-portale="FUSION SOLAR" data-index="6">
+            <img src="https://drive.google.com/uc?id=12P15YJMp6JrFOrlMmvAHDLF_eXK2vlKT" alt="Garavello">
+            <p class="image-title">Garavello</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="GDU" data-portale="FUSION SOLAR" data-index="7">
+            <img src="https://drive.google.com/uc?id=1jhPdP6m9tRYKKzpGCVFASqErbYUkCgRY" alt="GDU">
+            <p class="image-title">GDU</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Innovapack" data-portale="FUSION SOLAR" data-index="8">
+            <img src="https://drive.google.com/uc?id=1Ox5skoQvA8wx34gZxfz6hqMA-F0BX0cS" alt="Innovapack">
+            <p class="image-title">Innovapack</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Janus" data-portale="FUSION SOLAR" data-index="9">
+            <img src="https://drive.google.com/uc?id=1XCnSEwW5FgldzbLOvzklII6aSoVp68PK" alt="Janus">
+            <p class="image-title">Janus</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Lsi" data-portale="FUSION SOLAR" data-index="10">
+            <img src="https://drive.google.com/uc?id=1bplveL6KGa7PlRZrKy-1lwCOwjMV1bWE" alt="Lsi">
+            <p class="image-title">Lsi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Minervino_Murge" data-portale="FUSION SOLAR" data-index="11">
+            <img src="https://drive.google.com/uc?id=1GkTqiPJmPKoBfHbj27OtmGPvCA13MB-1" alt="Minervino_Murge">
+            <p class="image-title">Minervino_Murge</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Mirabello" data-portale="FUSION SOLAR" data-index="12">
+            <img src="https://drive.google.com/uc?id=1tUIpU4SfoOJPeMl9Z4f31EtYUzuyH9cN" alt="Mirabello">
+            <p class="image-title">Mirabello</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Mokito SPA" data-portale="FUSION SOLAR" data-index="13">
+            <img src="https://drive.google.com/uc?id=1V_XlpoZpju49s-m_NfRdG-Wm5DxTqmSZ" alt="Mokito SPA">
+            <p class="image-title">Mokito SPA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Parrocchia san Lorenzo" data-portale="FUSION SOLAR" data-index="14">
+            <img src="https://drive.google.com/uc?id=1MLqygNqgjB3_jI9tzuJUmVaH_bdgTtFb" alt="Parrocchia san Lorenzo">
+            <p class="image-title">Parrocchia san Lorenzo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Poste Italiane - Baggio" data-portale="FUSION SOLAR" data-index="15">
+            <img src="https://drive.google.com/uc?id=1v6WMfE36c0AZkDE7IJAtwDez0ynVLRep" alt="Poste Italiane - Baggio">
+            <p class="image-title">Poste Italiane - Baggio</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - CMP BRESCIA" data-portale="FUSION SOLAR" data-index="16">
+            <img src="https://drive.google.com/uc?id=1Vt4X3A_OfL3k84En3B5Gd7mVOri5HPEt" alt="POSTE ITALIANE - CMP BRESCIA">
+            <p class="image-title">POSTE ITALIANE - CMP BRESCIA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - MARCON" data-portale="FUSION SOLAR" data-index="17">
+            <img src="https://drive.google.com/uc?id=1T9iU5GLqTfovOyrL716f-0KJCeIbu5qb" alt="POSTE ITALIANE - MARCON">
+            <p class="image-title">POSTE ITALIANE - MARCON</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - MARTELLAGO" data-portale="FUSION SOLAR" data-index="18">
+            <img src="https://drive.google.com/uc?id=1qlD4G7qq4k07UMw9LSAN5XdUvTcikmsI" alt="POSTE ITALIANE - MARTELLAGO">
+            <p class="image-title">POSTE ITALIANE - MARTELLAGO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - ORIAGO" data-portale="FUSION SOLAR" data-index="19">
+            <img src="https://drive.google.com/uc?id=1myeG0FRMjihFTd5hl42_0QASOfoUXXSd" alt="POSTE ITALIANE - ORIAGO">
+            <p class="image-title">POSTE ITALIANE - ORIAGO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - POLIFUNZIONALE MESTRE" data-portale="FUSION SOLAR" data-index="20">
+            <img src="https://drive.google.com/uc?id=1Pc6AuzdYCZ3Ewujzqmch9-kaJLfWzdtu" alt="POSTE ITALIANE - POLIFUNZIONALE MESTRE">
+            <p class="image-title">POSTE ITALIANE - POLIFUNZIONALE MESTRE</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - PREGANZIOL" data-portale="FUSION SOLAR" data-index="21">
+            <img src="https://drive.google.com/uc?id=1O7mEhLVcXAeStEwx1J-c_DfU6EP_ENS4" alt="POSTE ITALIANE - PREGANZIOL">
+            <p class="image-title">POSTE ITALIANE - PREGANZIOL</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="CS ROSERIO" data-portale="FUSION SOLAR" data-index="22">
+            <img src="https://drive.google.com/uc?id=1jT1wMwTV1HViZybL7dYWoTnKQ6VWu7zp" alt="CS ROSERIO">
+            <p class="image-title">CS ROSERIO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="POSTE ITALIANE - SANTA MARIA SALA" data-portale="FUSION SOLAR" data-index="23">
+            <img src="https://drive.google.com/uc?id=1hnT3S9PAVeusZ66tDjHTZvL5klVPfjbn" alt="POSTE ITALIANE - SANTA MARIA SALA">
+            <p class="image-title">POSTE ITALIANE - SANTA MARIA SALA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Postel MELZO" data-portale="FUSION SOLAR" data-index="24">
+            <img src="https://drive.google.com/uc?id=1Y28zlnsYzYUCKlb6pN6eQUJxHmY5m4I3" alt="Postel MELZO">
+            <p class="image-title">Postel MELZO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Vibieffe" data-portale="FUSION SOLAR" data-index="25">
+            <img src="https://drive.google.com/uc?id=1NChzdt4LTr4vP5IFYQKXKTq_KVCA6-lO" alt="Vibieffe">
+            <p class="image-title">Vibieffe</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Vismaravetro" data-portale="FUSION SOLAR" data-index="26">
+            <img src="https://drive.google.com/uc?id=1i3Q6TOveTrCKitkGCW3A45sFSgkKtZUd" alt="Vismaravetro">
+            <p class="image-title">Vismaravetro</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="ZAMAPRES SRL" data-portale="FUSION SOLAR" data-index="27">
+            <img src="https://drive.google.com/uc?id=1CV5T2znw1IWtruYdfwQSRrlahY2Db2tE" alt="ZAMAPRES SRL">
+            <p class="image-title">ZAMAPRES SRL</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="Verwerkaf" data-portale="FUSION SOLAR" data-index="28">
+            <img src="https://drive.google.com/uc?id=1GD-U6Tnsx3Fc_mSDv2tecnXJoaWS9h_M" alt="Verwerkaf">
+            <p class="image-title">Verwerkaf</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FUSION" data-plant-name="DEPURATORE S ROCCO - MM SPA" data-portale="FUSION SOLAR" data-index="29">
+            <img src="https://drive.google.com/uc?id=1nM8onSLbLkomfSNwwBIXz1x06r2RGB4l" alt="DEPURATORE S ROCCO - MM SPA">
+            <p class="image-title">DEPURATORE S ROCCO - MM SPA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="KORNELIO" data-portale="FIMER" data-index="30">
+            <img src="https://drive.google.com/uc?id=1vJ4ctMUeBS8vubVUrRrXJs50bcQfrPhM" alt="KORNELIO">
+            <p class="image-title">KORNELIO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="La scossa via Gazzotti" data-portale="FIMER" data-index="31">
+            <img src="https://drive.google.com/uc?id=1eU-rjK2xvwv3GvUtl1InGSy1RDNxFvl5" alt="La scossa via Gazzotti">
+            <p class="image-title">La scossa via Gazzotti</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="MIA" data-portale="FIMER" data-index="32">
+            <img src="https://drive.google.com/uc?id=1oylAOdhq3Xt71fF-Qp-8fNachMcILAad" alt="MIA">
+            <p class="image-title">MIA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="Siva Pelli - 163" data-portale="FIMER" data-index="33">
+            <img src="https://drive.google.com/uc?id=126kBH1xH3gVpvv7HKuvZlg9X3rktUSF1" alt="Siva Pelli - 163">
+            <p class="image-title">Siva Pelli - 163</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="Sogno-107KWP" data-portale="FIMER" data-index="34">
+            <img src="https://drive.google.com/uc?id=1fU65Fmf2YUe2QJjX-PaKG6TvyKQgpm1i" alt="Sogno-107KWP">
+            <p class="image-title">Sogno-107KWP</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="FIMER" data-plant-name="Tosca 20kw" data-portale="FIMER" data-index="35">
+            <img src="https://drive.google.com/uc?id=1RGyyhnkFmB5GC_qCdxD_nB186NkGNPGK" alt="Tosca 20kw">
+            <p class="image-title">Tosca 20kw</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Amine" data-plant-name="Cucchi" data-portale="FRONIUS" data-index="36">
+            <img src="https://drive.google.com/uc?id=1MaDulOrEeulXPTL9CrCYG5py-wEIVyrR" alt="Cucchi">
+            <p class="image-title">Cucchi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Amine" data-plant-name="Fiat_Ala" data-portale="FRONIUS" data-index="37">
+            <img src="https://drive.google.com/uc?id=19QU30Jvid0LovzBHeIJMnIIGKsLM4fXP" alt="Fiat_Ala">
+            <p class="image-title">Fiat_Ala</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Amine" data-plant-name="PELLICANO" data-portale="FRONIUS" data-index="38">
+            <img src="https://drive.google.com/uc?id=1D8KUE50Hqfyex9LiaQlW7fvxg8i3AYXO" alt="PELLICANO">
+            <p class="image-title">PELLICANO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Amine" data-plant-name="Sogno" data-portale="FRONIUS" data-index="39">
+            <img src="https://drive.google.com/uc?id=1WFqdXmy0kieKcZpBnc666Yb5B3AJxu8C" alt="Sogno">
+            <p class="image-title">Sogno</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Mariano" data-plant-name="Gozo" data-portale="ISOLAR CLOUD" data-index="40">
+            <img src="https://drive.google.com/uc?id=1aPMUsXULn7J7xBbkqfxflLw6SRGmu_fQ" alt="Gozo">
+            <p class="image-title">Gozo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Bittu" data-plant-name="Nepi_Grande" data-portale="ISOLAR CLOUD" data-index="41">
+            <img src="https://drive.google.com/uc?id=1xd1RyH3Bp2D4BVcroVucXQbkdRTv-0UL" alt="Nepi_Grande">
+            <p class="image-title">Nepi_Grande</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Bittu" data-plant-name="CIMA SRL" data-portale="KOSTAL" data-index="42">
+            <img src="https://drive.google.com/uc?id=1yhWc1UFRiUtKsZ20tN-Rfw_iVoRVSDm_" alt="CIMA SRL">
+            <p class="image-title">CIMA SRL</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Bittu" data-plant-name="Treviglio Futura KOSTAL" data-portale="KOSTAL" data-index="43">
+            <img src="https://drive.google.com/uc?id=1bg3qSNFAz7DfRB6mkcXFxVd-d74hIukE" alt="Treviglio Futura KOSTAL">
+            <p class="image-title">Treviglio Futura KOSTAL</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="4 Madonne" data-portale="METEOCONTROL" data-index="44">
+            <img src="https://drive.google.com/uc?id=1koLsI5JENhNa8deyU2tPS5Y1uLNZopLA" alt="4 Madonne">
+            <p class="image-title">4 Madonne</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="ASTRA" data-portale="METEOCONTROL" data-index="45">
+            <img src="https://drive.google.com/uc?id=13Fs_b4CWukD0U15xFB1DoLcsCJpLfiMw" alt="ASTRA">
+            <p class="image-title">ASTRA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="ASTRA Grande" data-portale="METEOCONTROL" data-index="46">
+            <img src="https://drive.google.com/uc?id=1o2sOmNte65jLwrPl69tSW7gMe20TraYX" alt="ASTRA Grande">
+            <p class="image-title">ASTRA Grande</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Autoweb" data-portale="METEOCONTROL" data-index="47">
+            <img src="https://drive.google.com/uc?id=1lOEj76yI5DxWvzR7f0GirjkUmLNDLHdj" alt="Autoweb">
+            <p class="image-title">Autoweb</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Az. Agricola San Giuliano" data-portale="METEOCONTROL" data-index="48">
+            <img src="https://drive.google.com/uc?id=1Jb-olLDP3ySbo9563qNOo64T8TYsDLTU" alt="Az. Agricola San Giuliano">
+            <p class="image-title">Az. Agricola San Giuliano</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Bassu" data-portale="METEOCONTROL" data-index="49">
+            <img src="https://drive.google.com/uc?id=1Ft6jl5j8C70CzmcOcXSkBfcQ1kMe_OL8" alt="Bassu">
+            <p class="image-title">Bassu</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Cabo" data-portale="METEOCONTROL" data-index="50">
+            <img src="https://drive.google.com/uc?id=1UtoX_UbgjuhT3nKWKwF_kVP9u9cDR5sC" alt="Cabo">
+            <p class="image-title">Cabo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Canfari" data-portale="METEOCONTROL" data-index="51">
+            <img src="https://drive.google.com/uc?id=13vBEWBKCpvLvweR5Dy6hmywACQ9H99zo" alt="Canfari">
+            <p class="image-title">Canfari</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Casabona" data-portale="METEOCONTROL" data-index="52">
+            <img src="https://drive.google.com/uc?id=1iTVz30hPB3rKJ39MxATcl_Jjt5rjpedC" alt="Casabona">
+            <p class="image-title">Casabona</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Cascina Guastalla" data-portale="METEOCONTROL" data-index="53">
+            <img src="https://drive.google.com/uc?id=1owPorc14R4ZSObm0OR1ulTgqpNn1D49O" alt="Cascina Guastalla">
+            <p class="image-title">Cascina Guastalla</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Casu Antonio" data-portale="METEOCONTROL" data-index="54">
+            <img src="https://drive.google.com/uc?id=1WIRhk2WgpisZd9t61Zkm_T9O3rATBxw7" alt="Casu Antonio">
+            <p class="image-title">Casu Antonio</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Casu Daniele" data-portale="METEOCONTROL" data-index="55">
+            <img src="https://drive.google.com/uc?id=1KtBcYgKNRYVG_H7xUhFOQzCQRATEaqwo" alt="Casu Daniele">
+            <p class="image-title">Casu Daniele</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Centro Nautico Amici" data-portale="METEOCONTROL" data-index="56">
+            <img src="https://drive.google.com/uc?id=14c8plek7NOioWW78i3zJmMbp50Yt3jzz" alt="Centro Nautico Amici">
+            <p class="image-title">Centro Nautico Amici</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="CREMONESI" data-portale="METEOCONTROL" data-index="57">
+            <img src="https://drive.google.com/uc?id=1mih7cyO4DgRfDoigZLXgFyxc4J9YMT7N" alt="CREMONESI">
+            <p class="image-title">CREMONESI</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Donatello" data-portale="METEOCONTROL" data-index="58">
+            <img src="https://drive.google.com/uc?id=1fskxdP9Nmb_Tsq42PfjhYeUV3iyyjLat" alt="Donatello">
+            <p class="image-title">Donatello</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Eurofrigo" data-portale="METEOCONTROL" data-index="59">
+            <img src="https://drive.google.com/uc?id=1_FnR1JyupEHC1pEtASd9kjeDPIz_YXic" alt="Eurofrigo">
+            <p class="image-title">Eurofrigo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Ghisu" data-portale="METEOCONTROL" data-index="60">
+            <img src="https://drive.google.com/uc?id=1em0CIG5tI0OvRwKRLC6GnDK5ZiYqzpuq" alt="Ghisu">
+            <p class="image-title">Ghisu</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Immobiliare Effecieffe" data-portale="METEOCONTROL" data-index="61">
+            <img src="https://drive.google.com/uc?id=1ra5tyfnjA5vm9hXBQkoLWl4LJKxIqBi4" alt="Immobiliare Effecieffe">
+            <p class="image-title">Immobiliare Effecieffe</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="King S.p.A" data-portale="METEOCONTROL" data-index="62">
+            <img src="https://drive.google.com/uc?id=13FSShD6xjquCIor7wjxDuDxgbUsm_YPu" alt="King S.p.A">
+            <p class="image-title">King S.p.A</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="La Nuova Limfer" data-portale="METEOCONTROL" data-index="63">
+            <img src="https://drive.google.com/uc?id=1BeMcfg2dnJMZBYb5sBplrhapWlOsuS0R" alt="La Nuova Limfer">
+            <p class="image-title">La Nuova Limfer</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Ledda" data-portale="METEOCONTROL" data-index="64">
+            <img src="https://drive.google.com/uc?id=1jSRDDRPyjOwWObWvH2JvUL_-b9ZWMSl_" alt="Ledda">
+            <p class="image-title">Ledda</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Mel" data-portale="METEOCONTROL" data-index="65">
+            <img src="https://drive.google.com/uc?id=1YTSyRN3YbvGmxpO_Gc8GRLmlWYSZa_Cp" alt="Mel">
+            <p class="image-title">Mel</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Mollificio Marchesi" data-portale="METEOCONTROL" data-index="66">
+            <img src="https://drive.google.com/uc?id=1OQh4LrmqPC9tnhJz0JfJmAgnDUaACMLV" alt="Mollificio Marchesi">
+            <p class="image-title">Mollificio Marchesi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Njlaya srl" data-portale="METEOCONTROL" data-index="67">
+            <img src="https://drive.google.com/uc?id=1KjU2tfqkIrm1j5Gk3WnOOJk_KHxaWQIO" alt="Njlaya srl">
+            <p class="image-title">Njlaya srl</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Pedauto" data-portale="METEOCONTROL" data-index="68">
+            <img src="https://drive.google.com/uc?id=16Wtkkl55DFUWuI90IXbNyFXWKb3S5jzv" alt="Pedauto">
+            <p class="image-title">Pedauto</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Ronconi" data-portale="METEOCONTROL" data-index="69">
+            <img src="https://drive.google.com/uc?id=1WVVJuLhdAlb7HX9BuMCXMjxhlAaDG8HJ" alt="Ronconi">
+            <p class="image-title">Ronconi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="SIVA PELLI - GALLIATE" data-portale="METEOCONTROL" data-index="70">
+            <img src="https://drive.google.com/uc?id=1ZeMRQOeHU1rmefJQchoVsD14SDqBb9RB" alt="SIVA PELLI - GALLIATE">
+            <p class="image-title">SIVA PELLI - GALLIATE</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Spring85" data-portale="METEOCONTROL" data-index="71">
+            <img src="https://drive.google.com/uc?id=1Yr_-DVYAJPyAQv6qawxtqHSgrMhNEtgu" alt="Spring85">
+            <p class="image-title">Spring85</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Tosca" data-portale="METEOCONTROL" data-index="72">
+            <img src="https://drive.google.com/uc?id=1Q0oxYfoGElymQE7DoxuGnWvFOS0U_2ZN" alt="Tosca">
+            <p class="image-title">Tosca</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Verna" data-portale="METEOCONTROL" data-index="73">
+            <img src="https://drive.google.com/uc?id=1mOQc4CI1IPARWqM8RwoJiWDITbTuNapo" alt="Verna">
+            <p class="image-title">Verna</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="ZMC Italia S.r.l." data-portale="METEOCONTROL" data-index="74">
+            <img src="https://drive.google.com/uc?id=1lM0emO9ptojVYx16pITho__J9k8VkpR5" alt="ZMC Italia S.r.l.">
+            <p class="image-title">ZMC Italia S.r.l.</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="METE" data-plant-name="Prima Pietra" data-portale="METEOCONTROL" data-index="75">
+            <img src="https://drive.google.com/uc?id=1eafH6EVzcz5NkF2XhQRe3jBAwppdV79U" alt="Prima Pietra">
+            <p class="image-title">Prima Pietra</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="Capozi - Milano" data-portale="SMA" data-index="76">
+            <img src="https://drive.google.com/uc?id=1x_jyFMgqdl8FTCrxV2StUESuMRH9DfvP" alt="Capozi - Milano">
+            <p class="image-title">Capozi - Milano</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="Enjoy 1" data-portale="SMA" data-index="77">
+            <img src="https://drive.google.com/uc?id=15cNFpKXLxFjsx0Ez5h31C-utP1P6GCVg" alt="Enjoy 1">
+            <p class="image-title">Enjoy 1</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="MINERVINO MURGE _ 2kW" data-portale="SMA" data-index="78">
+            <img src="https://drive.google.com/uc?id=1KmntAzLtkvCxlNM3xCnBoNg47-B8ehxP" alt="MINERVINO MURGE _ 2kW">
+            <p class="image-title">MINERVINO MURGE _ 2kW</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="MINERVINO MURGE _ 3kW" data-portale="SMA" data-index="79">
+            <img src="https://drive.google.com/uc?id=1hx6ffAGsRD_ad5ElvqUwJW6QbmSNnFRQ" alt="MINERVINO MURGE _ 3kW">
+            <p class="image-title">MINERVINO MURGE _ 3kW</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="Omnicos" data-portale="SMA" data-index="80">
+            <img src="https://drive.google.com/uc?id=185TG1HtUnHewnfgGDgBN7lClMBmySeni" alt="Omnicos">
+            <p class="image-title">Omnicos</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SMA" data-plant-name="Soft" data-portale="SMA" data-index="81">
+            <img src="https://drive.google.com/uc?id=11s0XH4n8D8UBPB9whmxGPTeEWwa3c9jq" alt="Soft">
+            <p class="image-title">Soft</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="Centro Commerciale 20kwp MYENERGY" data-portale="SOLAR LOG" data-index="82">
+            <img src="https://drive.google.com/uc?id=1utwBTby25b3E0ej2Q3R4gp90NMzwdgIl" alt="Centro Commerciale 20kwp MYENERGY">
+            <p class="image-title">Centro Commerciale 20kwp MYENERGY</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="Centro Commerciale 49kwp CONDIZIONATORI" data-portale="SOLAR LOG" data-index="83">
+            <img src="https://drive.google.com/uc?id=1H7ES8mXU5Fx7nife8YWVXMX2fj6XpeMk" alt="Centro Commerciale 49kwp CONDIZIONATORI">
+            <p class="image-title">Centro Commerciale 49kwp CONDIZIONATORI</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="Centro Commerciale 56kwp POMPE" data-portale="SOLAR LOG" data-index="84">
+            <img src="https://drive.google.com/uc?id=1xK8ET3TQJ66Yq0rMVzLK0U2MnHP9BeiD" alt="Centro Commerciale 56kwp POMPE">
+            <p class="image-title">Centro Commerciale 56kwp POMPE</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="Herman Koll srl" data-portale="SOLAR LOG" data-index="85">
+            <img src="https://drive.google.com/uc?id=1E3VIA6Mdq_TH8GGHJ6OpN16urerBY-9Z" alt="Herman Koll srl">
+            <p class="image-title">Herman Koll srl</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="Nepi - 51.52 [kWp]" data-portale="SOLAR LOG" data-index="86">
+            <img src="https://drive.google.com/uc?id=1uYZgqi6ObE8O9DxSAF6xe19utKQBEP4X" alt="Nepi - 51.52 [kWp]">
+            <p class="image-title">Nepi - 51.52 [kWp]</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="ALLESSIA" data-plant-name="I.C.P. Industria Conciaria Piemonte Srl ex Siva Pelli" data-portale="SOLAR LOG" data-index="87">
+            <img src="https://drive.google.com/uc?id=1RoYBNfJNDnHv64jVytFaB53BcT6jpGco" alt="I.C.P. Industria Conciaria Piemonte Srl ex Siva Pelli">
+            <p class="image-title">I.C.P. Industria Conciaria Piemonte Srl ex Siva Pelli</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Albatross 2019" data-portale="SUNGUARD" data-index="88">
+            <img src="https://drive.google.com/uc?id=1teZqX3Ed6DVRkUDrYaLey7l4FiWAoGbU" alt="Albatross 2019">
+            <p class="image-title">Albatross 2019</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="ATTIS" data-portale="SUNGUARD" data-index="89">
+            <img src="https://drive.google.com/uc?id=1l-zKBsVtyy-jb68oXpUwXcUKXGdaHrus" alt="ATTIS">
+            <p class="image-title">ATTIS</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Barter S.r.l" data-portale="SUNGUARD" data-index="90">
+            <img src="https://drive.google.com/uc?id=1biK4af2-ze6VTG0SrqVc2WMhB08h3M5P" alt="Barter S.r.l">
+            <p class="image-title">Barter S.r.l</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Bobbio" data-portale="SUNGUARD" data-index="91">
+            <img src="https://drive.google.com/uc?id=1HD4pizVLLImg7JyJHEEIirh0QfAWo0Ac" alt="Bobbio">
+            <p class="image-title">Bobbio</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Bricoman - Orbassano" data-portale="SUNGUARD" data-index="92">
+            <img src="https://drive.google.com/uc?id=1IbUyTlrPH1LgScAQlFMf9Znuw5HsH7-Z" alt="Bricoman - Orbassano">
+            <p class="image-title">Bricoman - Orbassano</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Bricoman - Venegono" data-portale="SUNGUARD" data-index="93">
+            <img src="https://drive.google.com/uc?id=1bKvvnEJPhmtr2NtFFk7FdE-lWsGEoESS" alt="Bricoman - Venegono">
+            <p class="image-title">Bricoman - Venegono</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Caffe Port Moka" data-portale="SUNGUARD" data-index="94">
+            <img src="https://drive.google.com/uc?id=1stZ4YlAGWVwQVLMNiNBb50HA3227BuK5" alt="Caffe Port Moka">
+            <p class="image-title">Caffe Port Moka</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="CAMINADA" data-portale="SUNGUARD" data-index="95">
+            <img src="https://drive.google.com/uc?id=1touE6jsZtXovPbzHE3TiDe57siTVsw9D" alt="CAMINADA">
+            <p class="image-title">CAMINADA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Campogalliano" data-portale="SUNGUARD" data-index="96">
+            <img src="https://drive.google.com/uc?id=1CnZjH00Yok6A1bKEhCbHb-7NtNcAdsKo" alt="Campogalliano">
+            <p class="image-title">Campogalliano</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="CASSETTA" data-portale="SUNGUARD" data-index="97">
+            <img src="https://drive.google.com/uc?id=1RJdJb45YM9IPKiH7TFroVTCDLevklyxO" alt="CASSETTA">
+            <p class="image-title">CASSETTA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Castagna Arconate" data-portale="SUNGUARD" data-index="98">
+            <img src="https://drive.google.com/uc?id=1JvKLm9G6HoXEzXF4DqxhAbdNyuRf2sV-" alt="Castagna Arconate">
+            <p class="image-title">Castagna Arconate</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Castelnovetto" data-portale="SUNGUARD" data-index="99">
+            <img src="https://drive.google.com/uc?id=1CCj2TU4lQgxMuaxczkTFcqmDqomAPPSd" alt="Castelnovetto">
+            <p class="image-title">Castelnovetto</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Cima" data-portale="SUNGUARD" data-index="100">
+            <img src="https://drive.google.com/uc?id=1nVrBoLoAWM0JCuujBS-jsY_0KDkaKZXE" alt="Cima">
+            <p class="image-title">Cima</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="CITAC" data-portale="SUNGUARD" data-index="101">
+            <img src="https://drive.google.com/uc?id=1LHEQjlayz97SgM3lmahaimhx22DSX-W6" alt="CITAC">
+            <p class="image-title">CITAC</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="CRISTOFANO" data-portale="SUNGUARD" data-index="102">
+            <img src="https://drive.google.com/uc?id=18Ek0gzuFhmKGnky-mcicBIWgoGE9EdN5" alt="CRISTOFANO">
+            <p class="image-title">CRISTOFANO</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Cubotondo" data-portale="SUNGUARD" data-index="103">
+            <img src="https://drive.google.com/uc?id=1npbt3maQ3rciIkJ8-WlhYdVnbaTF3gRa" alt="Cubotondo">
+            <p class="image-title">Cubotondo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Fiat Ala Cantu" data-portale="SUNGUARD" data-index="104">
+            <img src="https://drive.google.com/uc?id=1t-WhFcOjRDnjdlzbPIBhEWluWFHr9DdN" alt="Fiat Ala Cantu">
+            <p class="image-title">Fiat Ala Cantu</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Fora" data-portale="SUNGUARD" data-index="105">
+            <img src="https://drive.google.com/uc?id=19YOGMUbvErg4rCAfT4GFeJkpA376uXiM" alt="Fora">
+            <p class="image-title">Fora</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Galli S.R.L." data-portale="SUNGUARD" data-index="106">
+            <img src="https://drive.google.com/uc?id=12_gA0czRmEbo2Q7cZu7iBDjf3JPosPXs" alt="Galli S.R.L.">
+            <p class="image-title">Galli S.R.L.</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Gelmini" data-portale="SUNGUARD" data-index="107">
+            <img src="https://drive.google.com/uc?id=1zBqrgdrD7x9pMEqm5yID2WJkQuSrBJMH" alt="Gelmini">
+            <p class="image-title">Gelmini</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Il Grillo Civitanova" data-portale="SUNGUARD" data-index="108">
+            <img src="https://drive.google.com/uc?id=19uxQB4Q8cDUOC12RksnVUGRxTXa-o969" alt="Il Grillo Civitanova">
+            <p class="image-title">Il Grillo Civitanova</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Il Risparmio - 1" data-portale="SUNGUARD" data-index="109">
+            <img src="https://drive.google.com/uc?id=1OGS6OHVSUhShe9KHEUK0d98zTMnqrRgB" alt="Il Risparmio - 1">
+            <p class="image-title">Il Risparmio - 1</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Il Risparmio - 2" data-portale="SUNGUARD" data-index="110">
+            <img src="https://drive.google.com/uc?id=1NG2xGX6UvHvU7HCokuCwcNEBFpcb7dv8" alt="Il Risparmio - 2">
+            <p class="image-title">Il Risparmio - 2</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="La Cittadella Sociale" data-portale="SUNGUARD" data-index="111">
+            <img src="https://drive.google.com/uc?id=1xsRcppYL8EMI3EB8rX3X-RBIJ6zuVjqc" alt="La Cittadella Sociale">
+            <p class="image-title">La Cittadella Sociale</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="La scossa - Soliera Via 1 Maggio" data-portale="SUNGUARD" data-index="112">
+            <img src="https://drive.google.com/uc?id=1MWO7vs7ZPAy3Bz6q5GQtkzHizd5PBE65" alt="La scossa - Soliera Via 1 Maggio">
+            <p class="image-title">La scossa - Soliera Via 1 Maggio</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="La Scossa di Via Finlandia" data-portale="SUNGUARD" data-index="113">
+            <img src="https://drive.google.com/uc?id=1FDaDznmbtd4tP2yl-yWmpbYggh1TU7en" alt="La Scossa di Via Finlandia">
+            <p class="image-title">La Scossa di Via Finlandia</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="MGB-Magazzini" data-portale="SUNGUARD" data-index="114">
+            <img src="https://drive.google.com/uc?id=1ieLSqQlYfmdFq5MjP-I-WJUpSg7i42_O" alt="MGB-Magazzini">
+            <p class="image-title">MGB-Magazzini</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Modena_via Morello" data-portale="SUNGUARD" data-index="115">
+            <img src="https://drive.google.com/uc?id=1sd_BWffMt4o-trAJfEF5bATCCf59z-Js" alt="Modena_via Morello">
+            <p class="image-title">Modena_via Morello</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Modena_via Nazioni" data-portale="SUNGUARD" data-index="116">
+            <img src="https://drive.google.com/uc?id=1dOz9D8sSWocSMoxgPD8aI6jEgaQ7Wx7W" alt="Modena_via Nazioni">
+            <p class="image-title">Modena_via Nazioni</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Myenergy - Alseno" data-portale="SUNGUARD" data-index="117">
+            <img src="https://drive.google.com/uc?id=1B3WKoP7xWybGh7140rvuhOVrEpS-sN3A" alt="Myenergy - Alseno">
+            <p class="image-title">Myenergy - Alseno</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Nuovarredo" data-portale="SUNGUARD" data-index="118">
+            <img src="https://drive.google.com/uc?id=1KdUa4KIwr_khAgXdNys2dus1Vlv9iyFb" alt="Nuovarredo">
+            <p class="image-title">Nuovarredo</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Officine Viola" data-portale="SUNGUARD" data-index="119">
+            <img src="https://drive.google.com/uc?id=1Zf3YrGIFeRuGNjcj0uI5Lob0M_Yr9MXK" alt="Officine Viola">
+            <p class="image-title">Officine Viola</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sant'Alberto" data-portale="SUNGUARD" data-index="120">
+            <img src="https://drive.google.com/uc?id=1fhdaIRomP94oJYBqc6s_81SWKmZzP2il" alt="Sant'Alberto">
+            <p class="image-title">Sant'Alberto</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sezione 1 - Capannone Centrale - 57.42 kWp" data-portale="SUNGUARD" data-index="121">
+            <img src="https://drive.google.com/uc?id=1W1K-3RD_LoJgCQsh7Fy0lE-DPVxzDvp5" alt="Sezione 1 - Capannone Centrale - 57.42 kWp">
+            <p class="image-title">Sezione 1 - Capannone Centrale - 57.42 kWp</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sezione 2 - Capannone Est - 139.86 kWp" data-portale="SUNGUARD" data-index="122">
+            <img src="https://drive.google.com/uc?id=1UTLyIIo4TuDOuxa363FulSPgErT6Pei3" alt="Sezione 2 - Capannone Est - 139.86 kWp">
+            <p class="image-title">Sezione 2 - Capannone Est - 139.86 kWp</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sezione 3 - Capannone Ovest - 103.06 kWp" data-portale="SUNGUARD" data-index="123">
+            <img src="https://drive.google.com/uc?id=1D358rkbP0DCyIn2CETuSUHgko3iYR_dg" alt="Sezione 3 - Capannone Ovest - 103.06 kWp">
+            <p class="image-title">Sezione 3 - Capannone Ovest - 103.06 kWp</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sezione 4 - Capannone Nord - 118.98 kWp" data-portale="SUNGUARD" data-index="124">
+            <img src="https://drive.google.com/uc?id=1vpDWngfeAEZanonitehk0NiPeo2DePE0" alt="Sezione 4 - Capannone Nord - 118.98 kWp">
+            <p class="image-title">Sezione 4 - Capannone Nord - 118.98 kWp</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Sezione 5 - 204.925 kWp" data-portale="SUNGUARD" data-index="125">
+            <img src="https://drive.google.com/uc?id=1ElCZomYe9WLJsSDVDu5uwJRZAap8Mr34" alt="Sezione 5 - 204.925 kWp">
+            <p class="image-title">Sezione 5 - 204.925 kWp</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="SIMAI" data-portale="SUNGUARD" data-index="126">
+            <img src="https://drive.google.com/uc?id=12lZNFJ7ua5jvjNR5PkslI6fssNARV3TT" alt="SIMAI">
+            <p class="image-title">SIMAI</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Stabilimento di Frasassi" data-portale="SUNGUARD" data-index="127">
+            <img src="https://drive.google.com/uc?id=1JxsO5wvxg7yKeQMWaAwGb44Cz01PjxWS" alt="Stabilimento di Frasassi">
+            <p class="image-title">Stabilimento di Frasassi</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Tintoria Trevigliese" data-portale="SUNGUARD" data-index="128">
+            <img src="https://drive.google.com/uc?id=1UFdK1hXtdJlAo0KaqKhzx6CarxdP2Ag5" alt="Tintoria Trevigliese">
+            <p class="image-title">Tintoria Trevigliese</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Transmatic" data-portale="SUNGUARD" data-index="129">
+            <img src="https://drive.google.com/uc?id=1S4YcwrOh78PhmO8rpvTWDvkdFAi9sosw" alt="Transmatic">
+            <p class="image-title">Transmatic</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Tubinox S.r.l." data-portale="SUNGUARD" data-index="130">
+            <img src="https://drive.google.com/uc?id=1-FNWvR6txEk_75bhlv3OV043I52--Cj1" alt="Tubinox S.r.l.">
+            <p class="image-title">Tubinox S.r.l.</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Villa & Bega" data-portale="SUNGUARD" data-index="131">
+            <img src="https://drive.google.com/uc?id=1J1fpEO2xTPmYBzjCL6EIe2e14vkvxvVV" alt="Villa & Bega">
+            <p class="image-title">Villa & Bega</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="Viteria Dell'Era" data-portale="SUNGUARD" data-index="132">
+            <img src="https://drive.google.com/uc?id=1DD_XDQaKC9LegSXYis1vDjBAblYplqZD" alt="Viteria Dell'Era">
+            <p class="image-title">Viteria Dell'Era</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="SUNGUARD" data-plant-name="ZED Milano" data-portale="SUNGUARD" data-index="133">
+            <img src="https://drive.google.com/uc?id=1omGYcq8o6ahLTroTemuR68AfuMSf8GuB" alt="ZED Milano">
+            <p class="image-title">ZED Milano</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Romina" data-plant-name="MIA carpark" data-portale="SUNNY PORTAL" data-index="134">
+            <img src="https://drive.google.com/uc?id=1coMSqZp_wcETURiZ_qa5UYPYa0jtMFDf" alt="MIA carpark">
+            <p class="image-title">MIA carpark</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Romina" data-plant-name="Lagostina SPA" data-portale="SUNNY PORTAL" data-index="135">
+            <img src="https://drive.google.com/uc?id=1JX0oOxli5L6yvbGbPnOLL0BHZ1DZvPsL" alt="Lagostina SPA">
+            <p class="image-title">Lagostina SPA</p>
+        </div>
+    
+        <div class="image-card" data-monitoring="Romina" data-plant-name="Togni_SMA" data-portale="SUNNY PORTAL" data-index="136">
+            <img src="https://drive.google.com/uc?id=1gDz88OYYY6AjKAKxGwCjQlxaIz767_Xz" alt="Togni_SMA">
+            <p class="image-title">Togni_SMA</p>
+        </div>
+    
+    </div>
+
+    <div class="gallery-overlay">
+        <div class="gallery-content">
+            <span class="gallery-close" id="close-gallery">&#215;</span>
+            <img class="gallery-image" id="gallery-image" alt="">
+            <span class="gallery-arrows gallery-prev" id="prev-image">&#9664;</span>
+            <span class="gallery-arrows gallery-next" id="next-image">&#9654;</span>
+        </div>
+    </div>
+
+    <script>
+        const imageCards = document.querySelectorAll('.image-card');
+        const overlay = document.querySelector('.gallery-overlay');
+        const galleryImage = document.querySelector('.gallery-image');
+        const closeGallery = document.getElementById('close-gallery');
+        const prevImage = document.getElementById('prev-image');
+        const nextImage = document.getElementById('next-image');
+
+        let currentIndex = null;
+        let filteredImages = [];
+
+        function showImage(index) {
+            const card = filteredImages[index];
+            const img = card.querySelector('img');
+            const title = card.querySelector('.image-title').textContent;
+            galleryImage.src = img.src;
+            galleryImage.alt = title;
+            galleryImage.setAttribute('data-index', index);
+            currentIndex = index;
+            overlay.style.display = 'block';
+        }
+
+        imageCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                showImage(index);
+            });
+        });
+
+        closeGallery.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
+
+        prevImage.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                showImage(currentIndex - 1);
+            }
+        });
+
+        nextImage.addEventListener('click', () => {
+            if (currentIndex < filteredImages.length - 1) {
+                showImage(currentIndex + 1);
+            }
+        });
+
+        function filterImages() {
+            const selectedMonitoring = document.getElementById('monitoring-select').value;
+            const selectedPlantName = document.getElementById('plant-name-select').value.toLowerCase();
+            const selectedPortale = document.getElementById('portale-select').value;
+
+            filteredImages = [];
+
+            imageCards.forEach((card) => {
+                const cardMonitoring = card.getAttribute('data-monitoring');
+                const cardPlantName = card.getAttribute('data-plant-name').toLowerCase();
+                const cardPortale = card.getAttribute('data-portale');
+
+                if (
+                    (selectedMonitoring === '' || cardMonitoring === selectedMonitoring) &&
+                    (selectedPlantName === '' || cardPlantName.includes(selectedPlantName)) &&
+                    (selectedPortale === '' || cardPortale === selectedPortale)
+                ) {
+                    card.style.display = 'block';
+                    filteredImages.push(card);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (filteredImages.length > 0) {
+                showImage(0);
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+
+        // Event listeners for search bars
+        const plantNameSelect = document.getElementById('plant-name-select');
+        const monitoringSelect = document.getElementById('monitoring-select');
+        const portaleSelect = document.getElementById('portale-select');
+
+        plantNameSelect.addEventListener('change', filterImages);
+        monitoringSelect.addEventListener('change', filterImages);
+        portaleSelect.addEventListener('change', filterImages);
+    </script>
+</body>
+</html>
