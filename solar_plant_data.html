@@ -25,10 +25,10 @@
             margin-top: 60px;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
         }
         .image-card {
-            flex: 0 0 calc(33.33% - 20px);
+            flex: 0 0 calc(30% - 20px);
             margin: 10px;
             text-align: center;
             cursor: pointer;
@@ -62,22 +62,22 @@
         }
         .gallery-image {
             max-width: 100%;
-            max-height: 100%;
+            max-height: 70%;
         }
         .gallery-close {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 24px;
+            font-size: 50px;
             cursor: pointer;
-            color: white;
+            color: green;
         }
         .gallery-arrows {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 36px;
-            color: white;
+            font-size: 50px;
+            color: red;
             cursor: pointer;
         }
         .gallery-prev {
@@ -85,6 +85,36 @@
         }
         .gallery-next {
             right: 20px;
+        }
+        .action-icons {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .action-icon {
+            font-size: 24px;
+            color: #0077B5;
+            cursor: pointer;
+        }
+        .whatsapp-icon {
+            background-image: url('https://i.postimg.cc/cLYxVRn8/whatsapp.png');
+            background-size: cover;
+        }
+        .email-icon {
+            background-image: url('https://i.postimg.cc/KvCcqqR2/mail.png');
+            background-size: cover;
+        }
+        .facebook-icon {
+            background-image: url('https://i.postimg.cc/0NskxzYX/messenger.png');
+            background-size: cover;
+        }
+        .download-icon {
+            background-image: url('https://i.postimg.cc/NGJjTftL/download-2.png');
+            background-size: cover;
         }
         /* Additional styles for search bars */
         .search-container {
@@ -828,9 +858,16 @@
     <div class="gallery-overlay">
         <div class="gallery-content">
             <span class="gallery-close" id="close-gallery">&#215;</span>
+            <p class="popup-title" id="popup-title"></p>
             <img class="gallery-image" id="gallery-image" alt="">
             <span class="gallery-arrows gallery-prev" id="prev-image">&#9664;</span>
             <span class="gallery-arrows gallery-next" id="next-image">&#9654;</span>
+            <div class="action-icons">
+                <div class="whatsapp-icon action-icon" id="whatsapp-icon"></div>
+                <div class="email-icon action-icon" id="email-icon"></div>
+                <div class="facebook-icon action-icon" id="facebook-icon"></div>
+                <div class="download-icon action-icon" id="download-icon"></div>
+            </div>
         </div>
     </div>
 
@@ -838,9 +875,14 @@
         const imageCards = document.querySelectorAll('.image-card');
         const overlay = document.querySelector('.gallery-overlay');
         const galleryImage = document.querySelector('.gallery-image');
+        const galleryTitle = document.querySelector('.popup-title');
         const closeGallery = document.getElementById('close-gallery');
         const prevImage = document.getElementById('prev-image');
         const nextImage = document.getElementById('next-image');
+        const whatsappIcon = document.getElementById('whatsapp-icon');
+        const emailIcon = document.getElementById('email-icon');
+        const facebookIcon = document.getElementById('facebook-icon');
+        const downloadIcon = document.getElementById('download-icon');
 
         let currentIndex = null;
         let filteredImages = [];
@@ -851,6 +893,8 @@
             const title = card.querySelector('.image-title').textContent;
             galleryImage.src = img.src;
             galleryImage.alt = title;
+            galleryTitle.textContent = title;
+            galleryTitle.style.fontWeight = 'bold';
             galleryImage.setAttribute('data-index', index);
             currentIndex = index;
             overlay.style.display = 'block';
@@ -876,6 +920,40 @@
             if (currentIndex < filteredImages.length - 1) {
                 showImage(currentIndex + 1);
             }
+        });
+
+        whatsappIcon.addEventListener('click', () => {
+            const imageUrl = galleryImage.src;
+            const plantName = galleryTitle.textContent;
+            const whatsappUrl = `https://wa.me/?text=Check%20out%20this%20image%20of%20${plantName}%20%3A%20${imageUrl}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        emailIcon.addEventListener('click', () => {
+            const imageUrl = galleryImage.src;
+            const plantName = galleryTitle.textContent;
+            const emailSubject = `Check out this image of ${plantName}`;
+            const emailBody = `Hey, I thought you'd be interested in seeing this image of ${plantName}. Check it out here: ${imageUrl}`;
+            const emailUrl = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            window.location.href = emailUrl;
+        });
+
+        facebookIcon.addEventListener('click', () => {
+            const imageUrl = galleryImage.src;
+            const plantName = galleryTitle.textContent;
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageUrl)}&quote=Check%20out%20this%20image%20of%20${plantName}`;
+            window.open(facebookUrl, '_blank');
+        });
+
+        downloadIcon.addEventListener('click', () => {
+            const imageUrl = galleryImage.src;
+            const a = document.createElement('a');
+            a.href = imageUrl;
+            a.download = 'image.jpg';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
 
         function filterImages() {
